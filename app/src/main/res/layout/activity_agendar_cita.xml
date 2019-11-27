@@ -32,38 +32,39 @@
             app:title="Agendar Cita" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/tipoTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Tipo Servicio"
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/duracionTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Name" />
+            android:hint="Duración"
+            android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/horaTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Name" />
+            android:hint="Hora(hh:mm:ss)"
+            android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/editText4"
+            android:id="@+id/estadoTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Name" />
+            android:hint="Estado"
+            android:inputType="textPersonName" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/agendarBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Agendar " />
