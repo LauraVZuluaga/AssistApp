@@ -67,10 +67,10 @@ public class AgendarCitaActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams(){
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("param1", tipoTxt1.getText().toString());
-                params.put("param2", duracionTxt1.getText().toString());
-                params.put("param3", horaTxt1.getText().toString());
-                params.put("param4", estadoTxt1.getText().toString());
+                params.put("tipoServicio", tipoTxt1.getText().toString());
+                params.put("duracion", duracionTxt1.getText().toString());
+                params.put("hora", horaTxt1.getText().toString());
+                params.put("estado", estadoTxt1.getText().toString());
                 return params;
             }
         };
