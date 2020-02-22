@@ -47,8 +47,15 @@ public class AgendarCitaActivity extends AppCompatActivity {
     private void agendarCita(){
         final ProgressDialog loading = ProgressDialog.show(this, "Por favor espere...",
                 "Actualizando datos...",false, false);
-        String REGISTER_URL = "http://localhost:3000/";
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, REGISTER_URL,
+
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("tipoServicio", tipoTxt1.getText().toString());
+        params.put("duracion", duracionTxt1.getText().toString());
+        params.put("hora", horaTxt1.getText().toString());
+        params.put("estado", estadoTxt1.getText().toString());
+
+        Consumidor.getInstance().agendarCita(this,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -63,19 +70,8 @@ public class AgendarCitaActivity extends AppCompatActivity {
                         loading.dismiss();
                         Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
                     }
-                }){
-            @Override
-            protected Map<String, String> getParams(){
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("tipoServicio", tipoTxt1.getText().toString());
-                params.put("duracion", duracionTxt1.getText().toString());
-                params.put("hora", horaTxt1.getText().toString());
-                params.put("estado", estadoTxt1.getText().toString());
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        //Invocación del servicio
-        requestQueue.add(stringRequest);
+                }, params);
     }
+
 }
+

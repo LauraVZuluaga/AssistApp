@@ -34,28 +34,29 @@ public class ConsultarCitasActivity extends AppCompatActivity {
         invocarServicio();
     }
     private void invocarServicio (){
-        String DATA_URL = "http://192.168.0.144:3000/";
         final ProgressDialog loading = ProgressDialog.show(this, "Por favor espere...",
                 "Actualizando datos...", false, false);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(DATA_URL, new Response.Listener<JSONArray>() {
+
+        Consumidor.getInstance().consultarCitas(this, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 loading.dismiss();
                 showListView(response);
             }
-        },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        loading.dismiss();
-                        System.out.println(error.getMessage());
-                        Toast.makeText(getApplicationContext(), "Error request:" + error.getMessage(),
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(jsonArrayRequest);
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error){
+                loading.dismiss();
+                Toast.makeText(getApplicationContext(), "Error request:" + error.getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
+
+
+
+
 
     private void showListView(JSONArray objeto){
         try{
