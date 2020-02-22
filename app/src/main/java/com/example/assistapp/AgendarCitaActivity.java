@@ -50,15 +50,17 @@ public class AgendarCitaActivity extends AppCompatActivity {
     private void agendarCita(){
         loading = ProgressDialog.show(this, "Por favor espere...",
                 "Actualizando datos...",false, false);
+         Map<String, String> params = getParams();
+        Consumidor.getInstance().agendarCita(this, onResponse, onError, params);
+    }
 
-        //Extract pls
+    private Map<String, String> getParams() {
         Map<String, String> params = new HashMap<String, String>();
         params.put("tipoServicio", tipoTxt1.getText().toString());
         params.put("duracion", duracionTxt1.getText().toString());
         params.put("hora", horaTxt1.getText().toString());
         params.put("estado", estadoTxt1.getText().toString());
-
-        Consumidor.getInstance().agendarCita(this, onResponse, onError, params);
+        return params;
     }
 
     private Response.Listener onResponse = new Response.Listener<String>() {

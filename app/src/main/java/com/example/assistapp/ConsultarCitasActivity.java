@@ -25,38 +25,21 @@ import java.util.List;
 public class ConsultarCitasActivity extends AppCompatActivity {
 
     private ListView listaConsultar;
+    ProgressDialog loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consultar_citas);
         listaConsultar = (ListView) findViewById(R.id.listaC);
+        loading = null;
         invocarServicio();
     }
     private void invocarServicio (){
-        final ProgressDialog loading = ProgressDialog.show(this, "Por favor espere...",
+        loading = ProgressDialog.show(this, "Por favor espere...",
                 "Actualizando datos...", false, false);
-
-        Consumidor.getInstance().consultarCitas(this, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                loading.dismiss();
-                showListView(response);
-            }
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error){
-                loading.dismiss();
-                Toast.makeText(getApplicationContext(), "Error request:" + error.getMessage(),
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-
+        Consumidor.getInstance().consultarCitas(this, onResponse, onError);
     }
-
-
-
-
 
     private void showListView(JSONArray objeto){
         try{
@@ -80,4 +63,20 @@ public class ConsultarCitasActivity extends AppCompatActivity {
 
         }
     }
+    private Response.Listener onResponse = new Response.Listener<JSONArray>() {
+        @Override
+        public void onResponse(JSONArray response) {
+            loading.dismiss();
+            showListView(response);
+        }
+    };
+
+    private Response.ErrorListener onError = new Response.ErrorListener(){
+        @Override
+        public void onErrorResponse(VolleyError error){
+            loading.dismiss();
+            Toast.makeText(getApplicationContext(), "Error request:" + error.getMessage(),
+                    Toast.LENGTH_LONG).show();
+        }
+    };
 }
