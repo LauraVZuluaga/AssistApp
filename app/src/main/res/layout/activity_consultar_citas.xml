@@ -27,6 +27,17 @@
         android:padding="?attr/dialogPreferredPadding"
         android:text="@string/siguientes_text" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <fragment
+            android:id="@+id/fragment2"
+            android:name="com.example.assistapp.CitasFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
     <ListView
         android:id="@+id/listaC"
         android:layout_width="match_parent"

@@ -3,4 +3,5 @@
     <item name="Padding_List" type="dimen">100dp</item>
     <dimen name="spacing_items">25dp</dimen>
     <dimen name="padding_item">35dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>
