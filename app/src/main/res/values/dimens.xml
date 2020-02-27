@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="Padding_List" type="dimen">100dp</item>
+    <dimen name="spacing_items">25dp</dimen>
+    <dimen name="padding_item">35dp</dimen>
+</resources>

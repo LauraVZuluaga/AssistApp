@@ -1,50 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="?attr/dialogPreferredPadding"
+    android:paddingTop="@dimen/Padding_List"
+    android:paddingRight="?attr/dialogPreferredPadding"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/agendarBtn"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="38dp"
-        android:layout_marginBottom="1dp"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.054" />
+        android:padding="@dimen/padding_item"
+        android:text="@string/AgendarCita" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginRight="1dp"
-        android:layout_marginBottom="1dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+    <Button
+        android:id="@+id/consultarBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_items"
+        android:padding="@dimen/padding_item"
+        android:text="@string/ConsultarCita" />
 
-        <Button
-            android:id="@+id/agendarBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Agendar Cita" />
-
-        <Button
-            android:id="@+id/consultarBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Consultar citas" />
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
