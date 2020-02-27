@@ -33,7 +33,7 @@ public class ConsultarCitasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_consultar_citas);
         listaConsultar = (ListView) findViewById(R.id.listaC);
         loading = null;
-        invocarServicio();
+        //invocarServicio();
     }
     private void invocarServicio (){
         loading = ProgressDialog.show(this, "Por favor espere...",

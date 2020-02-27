@@ -3,4 +3,7 @@
     <string name="AcompañaApp">AcompañaApp</string>
     <string name="AgendarCita">Agendar Cita</string>
     <string name="ConsultarCita">Consultar Cita</string>
+    <string name="siguientes_text">Usted tiene los siguientes servicios asignados</string>
+    <string name="aceptar_button">Aceptar</string>
+    <string name="paciente_text">Paciente: Maria Edilma Calderón</string>
 </resources>
