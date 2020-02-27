@@ -15,8 +15,6 @@ import android.view.ViewGroup;
 import com.example.assistapp.dummy.DummyContent;
 import com.example.assistapp.dummy.DummyContent.DummyItem;
 
-import java.util.List;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -28,7 +26,7 @@ public class CitasFragment extends Fragment {
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
-    private int mColumnCount = 2;
+    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -60,7 +58,7 @@ public class CitasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_citas_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_citas_list2, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -83,7 +81,7 @@ public class CitasFragment extends Fragment {
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
-       /*     throw new RuntimeException(context.toString()
+            /*throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         */}
     }

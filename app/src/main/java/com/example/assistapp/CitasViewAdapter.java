@@ -30,7 +30,7 @@ public class CitasViewAdapter extends RecyclerView.Adapter<CitasViewAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_citas, parent, false);
+                .inflate(R.layout.fragment_citas2, parent, false);
         return new ViewHolder(view);
     }
 
