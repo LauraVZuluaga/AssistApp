@@ -6,28 +6,19 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import model.ListaCitas;
 
+
+/**
+ * Interfaz para mostrar las citas pendientes
+ */
 public class ConsultarCitasActivity extends AppCompatActivity implements CitasFragment.OnListFragmentInteractionListener {
 
     ProgressDialog loading;
@@ -43,12 +34,21 @@ public class ConsultarCitasActivity extends AppCompatActivity implements CitasFr
         fragmentManager = getSupportFragmentManager();
         invocarServicio();
     }
+
+    /**
+     * Método para solicitar las citas pendientes. En caso de éxito ejecuta onResponse
+     * En caso de error ejecuta onError
+     */
     private void invocarServicio (){
         loading = ProgressDialog.show(this, "Por favor espere...",
                 "Actualizando datos...", false, false);
         Consumidor.getInstance().consultarCitas(this, onResponse, onError);
     }
 
+    /**
+     * Método que visualiza la información de la lista
+     * @param objeto El Json con la información de las citas.
+     */
     private void showListView(JSONArray objeto){
         try{
             listaCitas = ListaCitas.JSONArraytoLista(objeto);
@@ -59,24 +59,11 @@ public class ConsultarCitasActivity extends AppCompatActivity implements CitasFr
 
         }
     }
-    private Response.Listener onResponse = new Response.Listener<JSONArray>() {
-        @Override
-        public void onResponse(JSONArray response) {
 
-            showListView(response);
-            loading.dismiss();
-        }
-    };
-
-    private Response.ErrorListener onError = new Response.ErrorListener(){
-        @Override
-        public void onErrorResponse(VolleyError error){
-            loading.dismiss();
-            Toast.makeText(getApplicationContext(), "Error request:" + error.getMessage(),
-                    Toast.LENGTH_LONG).show();
-        }
-    };
-
+    /**
+     * Método que crea el fragmento con la lista de citas
+     * @param adapter Adaptador con la visualización de la lista de citas
+     */
     private void createFragment(ArrayAdapter<String> adapter){
         CitasFragment citasFragment = new CitasFragment(adapter);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -84,6 +71,10 @@ public class ConsultarCitasActivity extends AppCompatActivity implements CitasFr
         fragmentTransaction.commit();
     }
 
+    /**
+     * Método para mostrar el fragmento de detalles cuando se toca una cita
+     * @param position
+     */
     @Override
     public void onListFragmentInteraction(int position) {
         DetallesFragment detalles = new DetallesFragment(listaCitas.getCitaAt(position));
@@ -92,4 +83,29 @@ public class ConsultarCitasActivity extends AppCompatActivity implements CitasFr
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
+    /**
+     * Método anónimo que se ejecuta en caso de recibir la información
+     * del servicio de forma exitosa
+     */
+    private Response.Listener onResponse = new Response.Listener<JSONArray>() {
+        @Override
+        public void onResponse(JSONArray response) {
+            showListView(response);
+            loading.dismiss();
+        }
+    };
+
+    /**
+     * Método anónimo que se ejecuta en caso de error al solicitar la información
+     * al servicio
+     */
+    private Response.ErrorListener onError = new Response.ErrorListener(){
+        @Override
+        public void onErrorResponse(VolleyError error){
+            loading.dismiss();
+            Toast.makeText(getApplicationContext(), "Error request:" + error.getMessage(),
+                    Toast.LENGTH_LONG).show();
+        }
+    };
 }
