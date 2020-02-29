@@ -28,15 +28,9 @@
         android:text="@string/siguientes_text" />
 
     <FrameLayout
+        android:id="@+id/frame"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
-
-        <fragment
-            android:id="@+id/fragment2"
-            android:name="com.example.assistapp.CitasFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </FrameLayout>
+        android:layout_height="200dp" />
 
     <ListView
         android:id="@+id/listaC"

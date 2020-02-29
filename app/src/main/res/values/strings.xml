@@ -6,4 +6,10 @@
     <string name="siguientes_text">Usted tiene los siguientes servicios asignados</string>
     <string name="aceptar_button">Aceptar</string>
     <string name="paciente_text">Paciente: Maria Edilma Calderón</string>
+
+
+    <string name="tipoText">Tipo de acompañamiento:</string>
+    <string name="enfermeroText">Enfermero:</string>
+    <string name="fechaTexto">Fecha:</string>
+    <string name="horaText">Hora:</string>
 </resources>

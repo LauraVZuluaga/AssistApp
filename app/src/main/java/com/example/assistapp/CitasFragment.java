@@ -4,16 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.example.assistapp.dummy.DummyContent;
-import com.example.assistapp.dummy.DummyContent.DummyItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 /**
  * A fragment representing a list of Items.
@@ -23,36 +19,24 @@ import com.example.assistapp.dummy.DummyContent.DummyItem;
  */
 public class CitasFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
+    
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-
+    private ArrayAdapter<String> adapter;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public CitasFragment() {
     }
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static CitasFragment newInstance(int columnCount) {
-        CitasFragment fragment = new CitasFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
+    
+    public CitasFragment(ArrayAdapter<String> adapter){
+        this.adapter = adapter;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
+        super.onCreate(savedInstanceState);        
     }
 
     @Override
@@ -61,15 +45,11 @@ public class CitasFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_citas_list2, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (view instanceof ListView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new CitasViewAdapter(DummyContent.ITEMS, mListener));
+            ListView listView = (ListView) view;
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(onClick);
         }
         return view;
     }
@@ -81,15 +61,21 @@ public class CitasFragment extends Fragment {
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
-            /*throw new RuntimeException(context.toString()
+            throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
-        */}
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        // Send the event to the host activity
+        mListener.onListFragmentInteraction(position);
     }
 
     /**
@@ -103,7 +89,15 @@ public class CitasFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+
+        void onListFragmentInteraction(int position);
     }
+
+    private ListView.OnItemClickListener onClick = new ListView.OnItemClickListener(){
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            mListener.onListFragmentInteraction(i);
+        }
+    };
 }

@@ -1,10 +1,14 @@
 package com.example.assistapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,18 +26,22 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConsultarCitasActivity extends AppCompatActivity {
+import model.ListaCitas;
 
-    private ListView listaConsultar;
+public class ConsultarCitasActivity extends AppCompatActivity implements CitasFragment.OnListFragmentInteractionListener {
+
     ProgressDialog loading;
+    private ListaCitas listaCitas;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consultar_citas);
-        listaConsultar = (ListView) findViewById(R.id.listaC);
         loading = null;
-        //invocarServicio();
+        listaCitas = null;
+        fragmentManager = getSupportFragmentManager();
+        invocarServicio();
     }
     private void invocarServicio (){
         loading = ProgressDialog.show(this, "Por favor espere...",
@@ -43,20 +51,8 @@ public class ConsultarCitasActivity extends AppCompatActivity {
 
     private void showListView(JSONArray objeto){
         try{
-            List <String> contes = new ArrayList<String>();
-            JSONArray lista = objeto;
-            for (int i = 0; i < lista.length(); i++){
-                JSONObject json_data = lista.getJSONObject(i);
-                String conte =  json_data.getString("idServicio")+ " "+ json_data.getString("tipoServicio")
-                        + " " + json_data.getString("duracion") + " "+ json_data.getString("cedula_Enfermero")
-                        + " " + json_data.getString("cedula_Paciente") + " " +  json_data.getString("fecha")
-                        + " " + json_data.getString("hora")
-                        + " " +  json_data.getString("estado");
-                contes.add(conte);
-            }
-            ArrayAdapter<String> adapter  = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, contes);
-            listaConsultar.setAdapter(adapter);
+            listaCitas = ListaCitas.JSONArraytoLista(objeto);
+            createFragment(listaCitas.toArrayAdapter(this));
         }catch (Exception e){
             Toast.makeText(this, "Error cargar lista:" + e.getMessage(), Toast.LENGTH_LONG).show();
         }finally {
@@ -66,8 +62,9 @@ public class ConsultarCitasActivity extends AppCompatActivity {
     private Response.Listener onResponse = new Response.Listener<JSONArray>() {
         @Override
         public void onResponse(JSONArray response) {
-            loading.dismiss();
+
             showListView(response);
+            loading.dismiss();
         }
     };
 
@@ -79,4 +76,20 @@ public class ConsultarCitasActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
     };
+
+    private void createFragment(ArrayAdapter<String> adapter){
+        CitasFragment citasFragment = new CitasFragment(adapter);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.frame, citasFragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onListFragmentInteraction(int position) {
+        DetallesFragment detalles = new DetallesFragment(listaCitas.getCitaAt(position));
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame, detalles);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
 }

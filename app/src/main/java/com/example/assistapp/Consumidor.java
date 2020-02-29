@@ -46,4 +46,6 @@ public class Consumidor {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
     }
+
+
 }
