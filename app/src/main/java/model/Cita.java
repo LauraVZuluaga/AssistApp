@@ -3,8 +3,9 @@ package model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
+/**
+ * Clase del modelo de Cita
+ */
 public class Cita {
     private String idServicio;
     private String tipoServicio;
@@ -15,6 +16,12 @@ public class Cita {
     private String hora;
     private String estado;
 
+    /**
+     * Traduce la información del JSON a clase
+     * @param json_data JSON a traducir
+     * @return Clase traducida
+     * @throws JSONException Error en el JSON
+     */
     public static Cita JSONtoCita(JSONObject json_data) throws JSONException {
         Cita cita = new Cita();
         cita.setIdServicio(json_data.getString("idServicio"));
@@ -28,13 +35,17 @@ public class Cita {
         return cita;
     }
 
-    public boolean estadoEquals(String estado){
-        return this.estado.equalsIgnoreCase(estado);
-    }
-
+    /**
+     * Da la información corta de la cita
+     * @return Información resumida de la cita
+     */
     public String toItemString(){
         String itemString = tipoServicio + " " + fecha ;
         return itemString;
+    }
+
+    public boolean estadoEquals(String estado){
+        return this.estado.equalsIgnoreCase(estado);
     }
 
     public String getIdServicio() {

@@ -12,10 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 /**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
+ * Un fragmento que representa una lista de citas
+ * Las actividades que llamen este fragmento
+ * deben implementar la interfaz {@link OnListFragmentInteractionListener}
  */
 public class CitasFragment extends Fragment {
 

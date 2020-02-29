@@ -14,7 +14,7 @@ import model.Cita;
 
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragmento con la información detallada de una cita
  */
 public class DetallesFragment extends Fragment {
     private Cita cita;
@@ -38,6 +38,10 @@ public class DetallesFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Llena los campos de la vista.
+     * @param view Vista a poblar
+     */
     public void poblarCampos(View view){
         ((TextView) view.findViewById(R.id.textTipo)).setText(cita.getTipoServicio());
         ((TextView) view.findViewById(R.id.textFecha)).setText(cita.getFecha());

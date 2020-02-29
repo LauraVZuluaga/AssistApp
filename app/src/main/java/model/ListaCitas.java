@@ -10,6 +10,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Lista de citas pendientes
+ */
 public class ListaCitas {
     private List<Cita> citas;
 
@@ -17,6 +20,12 @@ public class ListaCitas {
         citas = new ArrayList<>();
     }
 
+    /**
+     * Traduce un JSONArray de citas a ListaCitas
+     * @param objeto JSONArray a traducir
+     * @return ListaCitas traducida
+     * @throws JSONException Error en el JSON
+     */
     public static ListaCitas JSONArraytoLista(JSONArray objeto) throws JSONException {
         ListaCitas listaCitas = new ListaCitas();
         JSONArray lista = objeto;
@@ -32,6 +41,11 @@ public class ListaCitas {
             citas.add(cita);
     }
 
+    /**
+     * Crea un adaptador visualizable de la cita
+     * @param context Vista
+     * @return Lista visualizable resumida de las citas
+     */
     public ArrayAdapter toArrayAdapter(Context context) {
         List<String> contes = new ArrayList<String>();
         for (Cita cita : citas) {
