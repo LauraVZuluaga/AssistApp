@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="?attr/dialogPreferredPadding"
-    android:paddingTop="@dimen/padding_item"
-    android:paddingRight="?attr/dialogPreferredPadding"
-    android:paddingBottom="?attr/dialogPreferredPadding"
+    android:padding="?attr/dialogPreferredPadding"
     tools:context=".ConsultarCitasActivity">
+
+    <include layout="@layout/logo" />
 
     <TextView
         android:id="@+id/pacienteTextView"
@@ -17,7 +16,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/spacing_items"
-        android:text="@string/paciente_text" />
+        android:text="@string/paciente_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
         android:id="@+id/siguientesTextView"
@@ -25,18 +25,13 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="?attr/dialogPreferredPadding"
-        android:text="@string/siguientes_text" />
+        android:text="@string/siguientes_text"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <FrameLayout
         android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="200dp" />
-
-    <ListView
-        android:id="@+id/listaC"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:visibility="gone" />
 
     <Button
         android:id="@+id/aceptarButton"

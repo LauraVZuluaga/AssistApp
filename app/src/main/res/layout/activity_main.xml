@@ -5,17 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="?attr/dialogPreferredPadding"
-    android:paddingTop="@dimen/Padding_List"
-    android:paddingRight="?attr/dialogPreferredPadding"
+    android:padding="?attr/dialogPreferredPadding"
     tools:context=".MainActivity">
+
+    <include layout="@layout/logo" />
 
     <Button
         android:id="@+id/agendarBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_margin"
         android:padding="@dimen/padding_item"
-        android:text="@string/AgendarCita" />
+        android:text="@string/AgendarCita"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <Button
         android:id="@+id/consultarBtn"
@@ -23,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_items"
         android:padding="@dimen/padding_item"
-        android:text="@string/ConsultarCita" />
+        android:text="@string/ConsultarCita"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 </LinearLayout>

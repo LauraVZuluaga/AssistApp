@@ -81,5 +81,8 @@ public class AgendarCitaActivity extends AppCompatActivity {
         }
     };
 
+    public void onClickAceptar(View view) {
+        onBackPressed();
+    }
 }
 
