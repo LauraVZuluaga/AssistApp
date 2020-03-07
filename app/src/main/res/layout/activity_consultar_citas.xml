@@ -37,6 +37,7 @@
         android:id="@+id/aceptarButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="onClickAceptar"
         android:padding="?attr/dialogPreferredPadding"
         android:text="@string/aceptar_button"
         android:visibility="visible" />

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -108,4 +109,8 @@ public class ConsultarCitasActivity extends AppCompatActivity implements CitasFr
                     Toast.LENGTH_LONG).show();
         }
     };
+
+    public void onClickAceptar(View view) {
+        onBackPressed();
+    }
 }
