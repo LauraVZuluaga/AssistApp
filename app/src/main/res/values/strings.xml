@@ -12,4 +12,5 @@
     <string name="enfermeroText">Enfermero:</string>
     <string name="fechaTexto">Fecha:</string>
     <string name="horaText">Hora:</string>
+    <string name="regresar_button">Regresar</string>
 </resources>

@@ -32,10 +32,10 @@ public class AgendarCitaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_agendar_cita);
 
         agendarBtn1 = (Button) findViewById(R.id.agendarBtn);
-        tipoTxt1 = (EditText) findViewById(R.id.tipoTxt);
+        /*tipoTxt1 = (EditText) findViewById(R.id.tipoTxt);
         duracionTxt1 = (EditText) findViewById(R.id.duracionTxt);
         horaTxt1 = (EditText) findViewById(R.id.horaTxt);
-        estadoTxt1 = (EditText) findViewById(R.id.estadoTxt);
+        estadoTxt1 = (EditText) findViewById(R.id.estadoTxt);*/
 
         agendarBtn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +75,6 @@ public class AgendarCitaActivity extends AppCompatActivity {
         @Override
         //La respuesta es en formato JSON
         public void onErrorResponse(VolleyError error) {
-            loading.dismiss();
             loading.dismiss();
             Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
         }
