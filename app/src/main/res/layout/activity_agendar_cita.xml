@@ -70,6 +70,7 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onClickRegresar"
             android:text="@string/regresar_button"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -77,7 +78,6 @@
             android:id="@+id/agendarBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onClickAceptar"
             android:text="@string/AgendarCita"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
     </LinearLayout>

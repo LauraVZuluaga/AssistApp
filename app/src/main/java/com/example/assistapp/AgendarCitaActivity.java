@@ -80,7 +80,7 @@ public class AgendarCitaActivity extends AppCompatActivity {
         }
     };
 
-    public void onClickAceptar(View view) {
+    public void onClickRegresar(View view) {
         onBackPressed();
     }
 }
