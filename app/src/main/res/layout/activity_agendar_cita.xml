@@ -18,9 +18,10 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/tipoSpin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:entries="@array/tipos" />
 
     <TextView
         android:id="@+id/fechaText"
@@ -30,11 +31,11 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/fechaEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="dd/mm/aa"
+        android:hint="aa-mm-dd"
         android:inputType="date" />
 
     <TextView
@@ -45,7 +46,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/enfermeroSpin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -57,7 +58,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <Spinner
-        android:id="@+id/spinner3"
+        android:id="@+id/horaSpin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

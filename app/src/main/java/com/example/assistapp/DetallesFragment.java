@@ -45,7 +45,7 @@ public class DetallesFragment extends Fragment {
     public void poblarCampos(View view){
         ((TextView) view.findViewById(R.id.textTipo)).setText(cita.getTipoServicio());
         ((TextView) view.findViewById(R.id.textFecha)).setText(cita.getFecha());
-        ((TextView) view.findViewById(R.id.textEnfermero)).setText(cita.getCedulaEnfermero());
+        ((TextView) view.findViewById(R.id.textEnfermero)).setText(cita.getNombreEnfermero());
         ((TextView) view.findViewById(R.id.textHora)).setText(cita.getHora());
     }
 

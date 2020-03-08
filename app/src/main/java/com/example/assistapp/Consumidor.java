@@ -6,10 +6,16 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Map;
+
+import model.Cita;
 
 public class Consumidor {
     private static final Consumidor ourInstance = new Consumidor();
@@ -30,29 +36,39 @@ public class Consumidor {
      * @param error Método a llamar en caso de error
      */
     public void consultarCitas(Context context, Response.Listener respuesta, Response.ErrorListener error ) {
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(DATA_URL, respuesta, error);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(DATA_URL+"paciente/1053866373", respuesta, error);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(jsonArrayRequest);
     }
 
     /**
-     * TODO Método para agendar citas
+     * /*Para realizar la inserción de datos necesario un JSON con la estructura como sigue
+     * {
+     *     "idServicio": 1,
+     *     "tipoServicio": "Caminar",
+     *     "duracion": 3,
+     *     "cedula_Enfermero": "105768909",
+     *     "cedula_Paciente": "1053866373",
+     *     "fecha": "2019-04-15,
+     *     "hora": "08:00:00",
+     *     "estado": "Cancelado"
+     * }
+     *
      * @param context
      * @param respuesta
      * @param error
-     * @param parametros
+     * @param params
      */
-    public void agendarCita(Context context, Response.Listener respuesta, Response.ErrorListener error, Map<String, String> parametros){
-        final Map<String, String> params = parametros;
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DATA_URL, respuesta, error){
-            @Override
-            protected Map<String, String> getParams(){
-                return params;
-            }
-        };
+    public void agendarCita(Context context, Response.Listener respuesta, Response.ErrorListener error, JSONObject params) {
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, DATA_URL, params, respuesta, error);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
+        requestQueue.add(request);
     }
+
+    /**
+     * consultarD/105387643/'2019-04-15'
+     */
 
 
 }

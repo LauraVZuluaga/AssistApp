@@ -3,6 +3,9 @@ package model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Clase del modelo de Cita
  */
@@ -10,7 +13,7 @@ public class Cita {
     private String idServicio;
     private String tipoServicio;
     private String duracion;
-    private String cedulaEnfermero;
+    private Enfermero enfermero;
     private String cedulaPaciente;
     private String fecha;
     private String hora;
@@ -27,11 +30,11 @@ public class Cita {
         cita.setIdServicio(json_data.getString("idServicio"));
         cita.setTipoServicio(json_data.getString("tipoServicio"));
         cita.setDuracion(json_data.getString("duracion"));
-        cita.setCedulaEnfermero(json_data.getString("cedula_Enfermero"));
         cita.setCedulaPaciente(json_data.getString("cedula_Paciente"));
         cita.setFecha(json_data.getString("fecha"));
         cita.setHora(json_data.getString("hora"));
         cita.setEstado(json_data.getString("estado"));
+        cita.setEnfermero(Enfermero.JSONtoEnfermero(json_data));
         return cita;
     }
 
@@ -43,6 +46,20 @@ public class Cita {
         String itemString = tipoServicio + " " + fecha ;
         return itemString;
     }
+
+    public JSONObject toJSON() throws JSONException{
+        JSONObject params = new JSONObject();
+        params.put("idServicio", getIdServicio());
+        params.put("tipoServicio", getTipoServicio());
+        params.put("duracion", getDuracion());
+        params.put("cedula_Enfermero", getCedulaEnfermero());
+        params.put("cedula_Paciente", getCedulaPaciente());
+        params.put("fecha", getFecha());
+        params.put("hora", getHora());
+        params.put("estado", getEstado());
+        return params;
+    }
+
 
     public boolean estadoEquals(String estado){
         return this.estado.equalsIgnoreCase(estado);
@@ -73,11 +90,11 @@ public class Cita {
     }
 
     public String getCedulaEnfermero() {
-        return cedulaEnfermero;
+        return getEnfermero().getCedula();
     }
 
-    public void setCedulaEnfermero(String cedulaEnfermero) {
-        this.cedulaEnfermero = cedulaEnfermero;
+    public String getNombreEnfermero() {
+        return getEnfermero().getNombre();
     }
 
     public String getCedulaPaciente() {
@@ -93,7 +110,7 @@ public class Cita {
     }
 
     public void setFecha(String fecha) {
-        this.fecha = fecha;
+        this.fecha = fecha.substring(0,10);
     }
 
     public String getHora() {
@@ -110,5 +127,13 @@ public class Cita {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public Enfermero getEnfermero() {
+        return enfermero;
+    }
+
+    public void setEnfermero(Enfermero enfermero) {
+        this.enfermero = enfermero;
     }
 }
