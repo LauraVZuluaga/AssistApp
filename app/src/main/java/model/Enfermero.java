@@ -15,8 +15,8 @@ public class Enfermero {
     public static Enfermero JSONtoEnfermero(JSONObject json_data) throws JSONException{
         String cedula = json_data.getString("cedula_Enfermero");
         String nombre = null;
-        if(json_data.has("nombre_Enfermero"))
-            nombre = json_data.getString("nombre_Enfermero");
+        if(json_data.has("nombre")&&json_data.has("apellido"))
+            nombre = json_data.getString("nombre") +" "+json_data.getString("apellido");
         return new Enfermero(cedula, nombre);
     }
 
