@@ -15,4 +15,5 @@
     <string name="regresar_button">Regresar</string>
     <string name="miss_information">¿Está seguro que quiere regresar?\n
     Perderá la información digitada</string>
+    <string name="ingrese">Ingrese los datos de la cita</string>
 </resources>

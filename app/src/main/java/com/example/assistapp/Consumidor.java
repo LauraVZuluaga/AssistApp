@@ -69,6 +69,11 @@ public class Consumidor {
     /**
      * /listaEnfermeros
      */
+    public void consultarEnfermeros(Context context, Response.Listener respuesta, Response.ErrorListener error ) {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(DATA_URL+"listaEnfermeros", respuesta, error);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(jsonArrayRequest);
+    }
 
     /**
      * consultarD/105387643/'2019-04-15'

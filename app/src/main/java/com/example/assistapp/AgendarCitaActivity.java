@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,15 +37,17 @@ import java.util.Map;
 
 import model.Cita;
 import model.Enfermero;
+import model.ListaEnfermeros;
 
 public class AgendarCitaActivity extends AppCompatActivity {
 
     private Button agendarBtn1;
     ProgressDialog loading;
     DatePickerDialog picker;
-    boolean agendado = false;
+    private boolean agendado = false;
     Spinner tipoSpin, enfermeroSpin, horaSpin;
     EditText fechaEdit;
+    private ListaEnfermeros enfermeros;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +79,6 @@ public class AgendarCitaActivity extends AppCompatActivity {
                 picker.show();
             }
         });
-
         agendarBtn1 = (Button) findViewById(R.id.agendarBtn);
         agendarBtn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +87,7 @@ public class AgendarCitaActivity extends AppCompatActivity {
             }
         });
         loading = null;
+        cargarEnfermeros();
     }
 
     private void agendarCita(){
@@ -97,6 +101,12 @@ public class AgendarCitaActivity extends AppCompatActivity {
         }
     }
 
+    private void cargarEnfermeros(){
+        loading = ProgressDialog.show(this, "Por favor espere...",
+                "Cargando datos...",false, false);
+        Consumidor.getInstance().consultarEnfermeros(this, respuestaEnfermeros, errorEnfermeros);
+    }
+
     //TODO Debe validarse antes
     private Cita mapCita(){
         Cita cita = new Cita();
@@ -106,7 +116,7 @@ public class AgendarCitaActivity extends AppCompatActivity {
         cita.setCedulaPaciente("1053866373");
         cita.setTipoServicio(tipoSpin.getSelectedItem().toString());
         //TODO cita.setEnfermero(null); Spin
-        cita.setEnfermero(new Enfermero("105768909", ""));
+        cita.setEnfermero(enfermeros.get((int)enfermeroSpin.getSelectedItemId()));
         //TODO los formatos de fecha y hora posiblemente se deben parsear
         cita.setFecha(fechaEdit.getText().toString());
         cita.setHora(horaSpin.getSelectedItem().toString());
@@ -125,6 +135,27 @@ public class AgendarCitaActivity extends AppCompatActivity {
     };
 
     private Response.ErrorListener onError = new Response.ErrorListener() {
+        @Override
+        //La respuesta es en formato JSON
+        public void onErrorResponse(VolleyError error) {
+            loading.dismiss();
+            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+        }
+    };
+    private Response.Listener respuestaEnfermeros = new Response.Listener<JSONArray>() {
+        @Override
+        public void onResponse(JSONArray response) {
+            loading.dismiss();
+            try{
+                enfermeros = ListaEnfermeros.JSONtoLista(response);
+                enfermeroSpin.setAdapter(enfermeros.toArrayAdapter(AgendarCitaActivity.this));
+            }catch (JSONException error){
+                Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }
+    };
+
+    private Response.ErrorListener errorEnfermeros = new Response.ErrorListener() {
         @Override
         //La respuesta es en formato JSON
         public void onErrorResponse(VolleyError error) {
