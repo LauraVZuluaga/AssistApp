@@ -67,6 +67,10 @@ public class Consumidor {
     }
 
     /**
+     * /listaEnfermeros
+     */
+
+    /**
      * consultarD/105387643/'2019-04-15'
      */
 

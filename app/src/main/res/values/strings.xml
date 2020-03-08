@@ -13,4 +13,6 @@
     <string name="fechaTexto">Fecha:</string>
     <string name="horaText">Hora:</string>
     <string name="regresar_button">Regresar</string>
+    <string name="miss_information">¿Está seguro que quiere regresar?\n
+    Perderá la información digitada</string>
 </resources>

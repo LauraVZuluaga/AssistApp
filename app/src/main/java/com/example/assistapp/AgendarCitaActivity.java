@@ -1,12 +1,20 @@
 package com.example.assistapp;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -32,6 +40,8 @@ public class AgendarCitaActivity extends AppCompatActivity {
 
     private Button agendarBtn1;
     ProgressDialog loading;
+    DatePickerDialog picker;
+    boolean agendado = false;
     Spinner tipoSpin, enfermeroSpin, horaSpin;
     EditText fechaEdit;
 
@@ -44,6 +54,27 @@ public class AgendarCitaActivity extends AppCompatActivity {
         horaSpin = (Spinner) findViewById(R.id.horaSpin);
 
         fechaEdit = (EditText) findViewById(R.id.fechaEdit);
+        fechaEdit.setInputType(InputType.TYPE_NULL);
+        fechaEdit.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                final Calendar cldr = Calendar.getInstance();
+                int day = cldr.get(Calendar.DAY_OF_MONTH);
+                int month = cldr.get(Calendar.MONTH);
+                int year = cldr.get(Calendar.YEAR);
+                // date picker dialog
+                picker = new DatePickerDialog(AgendarCitaActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                String fecha = String.format("%04d-%02d-%02d",year, monthOfYear, dayOfMonth);
+                                fechaEdit.setText(fecha);
+                            }
+                        }, year, month, day);
+                picker.show();
+            }
+        });
 
         agendarBtn1 = (Button) findViewById(R.id.agendarBtn);
         agendarBtn1.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +120,7 @@ public class AgendarCitaActivity extends AppCompatActivity {
         public void onResponse(JSONObject response) {
             loading.dismiss();
             Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
+            agendado=true;
         }
     };
 
@@ -103,6 +135,27 @@ public class AgendarCitaActivity extends AppCompatActivity {
 
     public void onClickRegresar(View view) {
         onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(agendado){
+            super.onBackPressed();
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.miss_information)
+                .setPositiveButton("Salir", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        AgendarCitaActivity.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton("Permanecer", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.create().show();
     }
 }
 
