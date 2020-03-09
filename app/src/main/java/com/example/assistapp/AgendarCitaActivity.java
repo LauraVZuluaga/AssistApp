@@ -48,14 +48,26 @@ public class AgendarCitaActivity extends AppCompatActivity {
     Spinner tipoSpin, enfermeroSpin, horaSpin;
     EditText fechaEdit;
     private ListaEnfermeros enfermeros;
+    Calendar fechaCalendario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agendar_cita);
         tipoSpin = (Spinner) findViewById(R.id.tipoSpin);
-        enfermeroSpin = (Spinner) findViewById(R.id.enfermeroSpin);
         horaSpin = (Spinner) findViewById(R.id.horaSpin);
+        enfermeroSpin = (Spinner) findViewById(R.id.enfermeroSpin);
+        enfermeroSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                disponibilidad();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+
+            }
+        });
+
 
         fechaEdit = (EditText) findViewById(R.id.fechaEdit);
         fechaEdit.setInputType(InputType.TYPE_NULL);
@@ -67,13 +79,15 @@ public class AgendarCitaActivity extends AppCompatActivity {
                 int day = cldr.get(Calendar.DAY_OF_MONTH);
                 int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
-                // date picker dialog
                 picker = new DatePickerDialog(AgendarCitaActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 String fecha = String.format("%04d-%02d-%02d",year, monthOfYear, dayOfMonth);
                                 fechaEdit.setText(fecha);
+                                fechaCalendario = Calendar.getInstance();
+                                fechaCalendario.set(year,monthOfYear,dayOfMonth);
+                                disponibilidad();
                             }
                         }, year, month, day);
                 picker.show();
@@ -81,6 +95,7 @@ public class AgendarCitaActivity extends AppCompatActivity {
         });
         agendarBtn1 = (Button) findViewById(R.id.agendarBtn);
         agendarBtn1.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 agendarCita();
@@ -90,13 +105,15 @@ public class AgendarCitaActivity extends AppCompatActivity {
         cargarEnfermeros();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void agendarCita(){
-        loading = ProgressDialog.show(this, "Por favor espere...",
-                "Actualizando datos...",false, false);
-        Cita cita = mapCita(); //TODO Validar primero
         try{
+            validarCampos();
+            loading = ProgressDialog.show(this, "Por favor espere...",
+                    "Actualizando datos...",false, false);
+            Cita cita = mapCita();
             Consumidor.getInstance().agendarCita(this, onResponse, onError, cita.toJSON());
-        }catch (JSONException error){
+        }catch (Exception error){
             Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
         }
     }
@@ -104,10 +121,10 @@ public class AgendarCitaActivity extends AppCompatActivity {
     private void cargarEnfermeros(){
         loading = ProgressDialog.show(this, "Por favor espere...",
                 "Cargando datos...",false, false);
-        Consumidor.getInstance().consultarEnfermeros(this, respuestaEnfermeros, errorEnfermeros);
+        Consumidor.getInstance().consultarEnfermeros(this, respuestaEnfermeros, onError);
     }
 
-    //TODO Debe validarse antes
+
     private Cita mapCita(){
         Cita cita = new Cita();
         cita.setIdServicio("666");
@@ -115,15 +132,25 @@ public class AgendarCitaActivity extends AppCompatActivity {
         cita.setDuracion("1");
         cita.setCedulaPaciente("1053866373");
         cita.setTipoServicio(tipoSpin.getSelectedItem().toString());
-        //TODO cita.setEnfermero(null); Spin
         cita.setEnfermero(enfermeros.get((int)enfermeroSpin.getSelectedItemId()));
-        //TODO los formatos de fecha y hora posiblemente se deben parsear
         cita.setFecha(fechaEdit.getText().toString());
         cita.setHora(horaSpin.getSelectedItem().toString());
         return cita;
     }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void validarCampos() throws IOException {
+        if(fechaEdit.getText().toString().isEmpty()){
+            throw new IOException("Por favor rellene todos los campos");
+        }
+        if(enfermeros==null || enfermeros.isEmpty()){
+            throw new IOException("No se cargaron los enfermeros. Por favor revise la conexión");
+        }
+        if(Calendar.getInstance().compareTo(fechaCalendario)>0){
+            throw new IOException("Por favor escoja una fecha válida");
+        }
+        //TODO validar horas
+    }
 
     private Response.Listener onResponse = new Response.Listener<JSONObject>() {
         @Override
@@ -155,15 +182,6 @@ public class AgendarCitaActivity extends AppCompatActivity {
         }
     };
 
-    private Response.ErrorListener errorEnfermeros = new Response.ErrorListener() {
-        @Override
-        //La respuesta es en formato JSON
-        public void onErrorResponse(VolleyError error) {
-            loading.dismiss();
-            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
-        }
-    };
-
     public void onClickRegresar(View view) {
         onBackPressed();
     }
@@ -188,5 +206,22 @@ public class AgendarCitaActivity extends AppCompatActivity {
                 });
         builder.create().show();
     }
+
+    private void disponibilidad(){
+        Enfermero enfermero = enfermeros.get((int)enfermeroSpin.getSelectedItemId());
+        if(!fechaEdit.getText().toString().isEmpty() && enfermero!=null){
+            loading = ProgressDialog.show(this, "Por favor espere...",
+                    "Cargando datos...",false, false);
+            Consumidor.getInstance().consultarDisponibilidad(this, new Response.Listener() {
+                @Override
+                public void onResponse(Object response) {
+                    System.out.println(response);
+                    //TODO Poblar
+                }
+            }, onError, enfermero.getCedula(), fechaEdit.getText().toString());
+        }
+    }
+
+
 }
 

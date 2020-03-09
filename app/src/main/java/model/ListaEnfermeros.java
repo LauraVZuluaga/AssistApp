@@ -35,6 +35,10 @@ public class ListaEnfermeros {
         return new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, contes);
     }
 
+    public boolean isEmpty(){
+        return enfermeros.isEmpty();
+    }
+
     public Enfermero get(int posicion){
         return enfermeros.get(posicion);
     }

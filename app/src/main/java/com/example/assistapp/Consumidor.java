@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 import model.Cita;
+import model.Enfermero;
 
 public class Consumidor {
     private static final Consumidor ourInstance = new Consumidor();
@@ -78,6 +79,12 @@ public class Consumidor {
     /**
      * consultarD/105387643/'2019-04-15'
      */
+    public void consultarDisponibilidad(Context context, Response.Listener respuesta, Response.ErrorListener error, String cedulaEnfermero,
+                                        String fecha ){
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(DATA_URL+"consultarD/"+cedulaEnfermero+"/"+fecha, respuesta, error);
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(jsonArrayRequest);
+    }
 
 
 }
