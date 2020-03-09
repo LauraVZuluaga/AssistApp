@@ -7,16 +7,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Map;
-
-import model.Cita;
-import model.Enfermero;
 
 public class Consumidor {
     private static final Consumidor ourInstance = new Consumidor();

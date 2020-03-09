@@ -15,8 +15,8 @@ public class Enfermero {
     private String nombre;
     private List<String> horario;
 
-    public static String[] HORARIOS = ("0,1,2,3,4,5,6,7,8,9,10," +
-            "11,12,13,14,15,16,17,18,19,20,21,22,23").split(",");
+    public static String[] HORARIOS = ("7,8,9,10," +
+            "11,12,13,14,15,16,17,18").split(",");
 
     public Enfermero(String cedula, String nombre){
         this.cedula = cedula;
@@ -24,8 +24,14 @@ public class Enfermero {
         this.horario = new ArrayList<>();
     }
 
+    /**
+     * Transforma un JSON a un enfermero
+     * @param json_data Json a convertir
+     * @return El susodicho enfermero
+     * @throws JSONException Por si el JSON no venía bien
+     */
     public static Enfermero JSONtoEnfermero(JSONObject json_data) throws JSONException{
-        String cedula = null;
+        String cedula;
         if(json_data.has("cedula"))
             cedula = json_data.getString("cedula");
         else
@@ -36,6 +42,10 @@ public class Enfermero {
         return new Enfermero(cedula, nombre);
     }
 
+    /**
+     * Remueve los horarios ocupados de los disponibles
+     * @param horariosOcupados
+     */
     public void setHorario(String horariosOcupados){
         ArrayList<String> arregloHorarios = new ArrayList<>(Arrays.asList(horariosOcupados.split(",")));
         for(String hora:HORARIOS){
@@ -49,13 +59,17 @@ public class Enfermero {
         return !horario.isEmpty();
     }
 
+    /**
+     * Prepara el horario para la interfaz
+     * @param context
+     * @return
+     */
     public ArrayAdapter getHorarioAdapter(Context context){
        List<String> contes = new ArrayList<String>();
             for (String hora:horario) {
                 contes.add(String.format("%02d:00:00", Integer.parseInt(hora)));
             }
             return new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, contes);
-
     }
 
     public String getCedula() {

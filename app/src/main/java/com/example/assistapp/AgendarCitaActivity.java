@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.icu.util.Calendar;
@@ -20,25 +19,22 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import model.Cita;
 import model.Enfermero;
 import model.ListaEnfermeros;
 
+/**
+ * Clase para la interfaz de agendar cita.
+ * Esta clase hace más de lo que debería (Validaciones) por lo que
+ * una refactorización le vendría bien
+ */
 public class AgendarCitaActivity extends AppCompatActivity {
 
     private Button agendarBtn1;
@@ -106,6 +102,9 @@ public class AgendarCitaActivity extends AppCompatActivity {
         cargarEnfermeros();
     }
 
+    /**
+     * Solicita al servicio que agende las citas después de validar los campos
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void agendarCita(){
         try{
@@ -119,6 +118,9 @@ public class AgendarCitaActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Consulta a los enfermeros para poblar el campo de enfermero
+     */
     private void cargarEnfermeros(){
         loading = ProgressDialog.show(this, "Por favor espere...",
                 "Cargando datos...",false, false);
@@ -126,6 +128,10 @@ public class AgendarCitaActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Transforma el formulario a una cita
+     * @return La cita digitada
+     */
     private Cita mapCita(){
         Cita cita = new Cita();
         cita.setIdServicio("666");
@@ -139,6 +145,10 @@ public class AgendarCitaActivity extends AppCompatActivity {
         return cita;
     }
 
+    /**
+     * Valida los campos como que se haya digitado una fecha, o que la fecha sea mayor a la actual
+     * @throws IOException
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void validarCampos() throws IOException {
         if(fechaEdit.getText().toString().isEmpty()){
@@ -189,6 +199,9 @@ public class AgendarCitaActivity extends AppCompatActivity {
         onBackPressed();
     }
 
+    /**
+     * Cuando se presiona Atrás, debe salir un mensaje de confirmación
+     */
     @Override
     public void onBackPressed(){
         if(agendado){
@@ -210,6 +223,9 @@ public class AgendarCitaActivity extends AppCompatActivity {
         builder.create().show();
     }
 
+    /**
+     * Verifica la disponibilidad de un enfermero y fecha elegida
+     */
     private void disponibilidad(){
         if(enfermeros==null)
             return;
@@ -227,6 +243,11 @@ public class AgendarCitaActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Valida el horario asignado al enfermero y pobla el spinner
+     * @param e enfermero al que se le mira el horario
+     * @param response horario a poblar
+     */
     private void poblarSpin(Enfermero e, JSONObject response){
         try{
             e.setHorario(response.getString(response.keys().next()));
