@@ -47,6 +47,7 @@ public class Enfermero {
      * @param horariosOcupados
      */
     public void setHorario(String horariosOcupados){
+        horario.clear();
         ArrayList<String> arregloHorarios = new ArrayList<>(Arrays.asList(horariosOcupados.split(",")));
         for(String hora:HORARIOS){
             if(!arregloHorarios.contains(hora)){
