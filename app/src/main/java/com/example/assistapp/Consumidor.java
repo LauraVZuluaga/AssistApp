@@ -81,9 +81,10 @@ public class Consumidor {
      */
     public void consultarDisponibilidad(Context context, Response.Listener respuesta, Response.ErrorListener error, String cedulaEnfermero,
                                         String fecha ){
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(DATA_URL+"consultarD/"+cedulaEnfermero+"/"+fecha, respuesta, error);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,DATA_URL
+                +"consultarD/"+cedulaEnfermero+"/'"+fecha+"'",null, respuesta, error);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(jsonArrayRequest);
+        requestQueue.add(request);
     }
 
 

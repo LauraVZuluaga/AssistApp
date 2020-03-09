@@ -98,8 +98,7 @@
         android:layout_marginTop="@dimen/smol_top"
         android:layout_marginRight="@dimen/text_margin"
         android:layout_marginBottom="@dimen/text_margin"
-        android:layout_weight="2"
-        android:entries="@array/stubHoras" />
+        android:layout_weight="2" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -60,6 +60,7 @@ public class AgendarCitaActivity extends AppCompatActivity {
         enfermeroSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+
                 disponibilidad();
             }
             @Override
@@ -83,7 +84,7 @@ public class AgendarCitaActivity extends AppCompatActivity {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                String fecha = String.format("%04d-%02d-%02d",year, monthOfYear, dayOfMonth);
+                                String fecha = String.format("%04d-%02d-%02d",year, monthOfYear+1, dayOfMonth);
                                 fechaEdit.setText(fecha);
                                 fechaCalendario = Calendar.getInstance();
                                 fechaCalendario.set(year,monthOfYear,dayOfMonth);
@@ -149,7 +150,9 @@ public class AgendarCitaActivity extends AppCompatActivity {
         if(Calendar.getInstance().compareTo(fechaCalendario)>0){
             throw new IOException("Por favor escoja una fecha válida");
         }
-        //TODO validar horas
+        if(horaSpin.getAdapter()==null){
+            throw new IOException("El enfermero escogido no tiene horarios disponibles en dicha fecha");
+        }
     }
 
     private Response.Listener onResponse = new Response.Listener<JSONObject>() {
@@ -208,17 +211,33 @@ public class AgendarCitaActivity extends AppCompatActivity {
     }
 
     private void disponibilidad(){
-        Enfermero enfermero = enfermeros.get((int)enfermeroSpin.getSelectedItemId());
+        if(enfermeros==null)
+            return;
+        final Enfermero enfermero = enfermeros.get((int)enfermeroSpin.getSelectedItemId());
         if(!fechaEdit.getText().toString().isEmpty() && enfermero!=null){
             loading = ProgressDialog.show(this, "Por favor espere...",
                     "Cargando datos...",false, false);
-            Consumidor.getInstance().consultarDisponibilidad(this, new Response.Listener() {
+            Consumidor.getInstance().consultarDisponibilidad(this, new Response.Listener<JSONObject>() {
                 @Override
-                public void onResponse(Object response) {
-                    System.out.println(response);
-                    //TODO Poblar
+                public void onResponse(JSONObject response) {
+                    loading.dismiss();
+                    poblarSpin(enfermero, response);
                 }
             }, onError, enfermero.getCedula(), fechaEdit.getText().toString());
+        }
+    }
+
+    private void poblarSpin(Enfermero e, JSONObject response){
+        try{
+            e.setHorario(response.getString(response.keys().next()));
+            if(!e.tieneHorario()){
+                horaSpin.setAdapter(null);
+                throw new IllegalArgumentException("Por favor ingrese un dia que no sea domingo ni festivo");
+            }else{
+                horaSpin.setAdapter(e.getHorarioAdapter(this));
+            }
+        }catch (Exception error){
+            Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
         }
     }
 

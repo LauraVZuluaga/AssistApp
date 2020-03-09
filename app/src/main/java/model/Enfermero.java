@@ -1,15 +1,27 @@
 package model;
 
+import android.content.Context;
+import android.widget.ArrayAdapter;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Enfermero {
     private String cedula;
     private String nombre;
+    private List<String> horario;
+
+    public static String[] HORARIOS = ("0,1,2,3,4,5,6,7,8,9,10," +
+            "11,12,13,14,15,16,17,18,19,20,21,22,23").split(",");
 
     public Enfermero(String cedula, String nombre){
         this.cedula = cedula;
         this.nombre = nombre;
+        this.horario = new ArrayList<>();
     }
 
     public static Enfermero JSONtoEnfermero(JSONObject json_data) throws JSONException{
@@ -24,6 +36,27 @@ public class Enfermero {
         return new Enfermero(cedula, nombre);
     }
 
+    public void setHorario(String horariosOcupados){
+        ArrayList<String> arregloHorarios = new ArrayList<>(Arrays.asList(horariosOcupados.split(",")));
+        for(String hora:HORARIOS){
+            if(!arregloHorarios.contains(hora)){
+                horario.add(hora);
+            }
+        }
+    }
+
+    public boolean tieneHorario(){
+        return !horario.isEmpty();
+    }
+
+    public ArrayAdapter getHorarioAdapter(Context context){
+       List<String> contes = new ArrayList<String>();
+            for (String hora:horario) {
+                contes.add(String.format("%02d:00:00", Integer.parseInt(hora)));
+            }
+            return new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, contes);
+
+    }
 
     public String getCedula() {
         return cedula;
